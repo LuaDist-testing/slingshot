@@ -1,0 +1,1025 @@
+2014-07-31  Gary V. Vaughan  <gary@gnu.org>
+
+	Release version 7
+	* NEWS: Record release date.
+
+	release: use new luarocks 2.2.0 upload command.
+	* build-aux/release.mk (LUAROCKS): New macro. Default to luarocks.
+	(upload): New phony rule. Call luarocks upload with release
+	rockspec file.
+	(release): Add `$(MAKE) upload`.
+	* NEWS: Update.
+
+	maint: add a waffle.io badge to README.md.
+	* README.md: Add a waffle.io badge.
+
+	travis: use git luarocks for moonrocks and upload.
+	* travis.yml.in (LUAROCKS_BASE): Remove.
+	(install): Build a shallow git clone of luarocks repo HEAD.
+	* .travis.yml: Regenerate.
+
+	m4: sync ax_lua.m4 with upstream.
+	* m4/ax_lua.m4: Sync with upstream.
+
+2014-05-25  Gary V. Vaughan  <gary@gnu.org>
+
+	mkrockspecs: set datarootdir in addition to datadir subset.
+	* src/mkrockspecs.in (default.build): When using a GNU autotools
+	driven installation, we still set datarootdir so that (among
+	others) the documentation trees are installed to the correct rock
+	directory.  But, don't mangle datadir while doing so!
+
+	mkrockspecs: set datarootdir instead of just datadir subset.
+	* src/mkrockspecs.in (default.build): When using a GNU autotools
+	driven installation, set datarootdir so that (among others) the
+	documentation trees are installed to the correct rock directory.
+
+2014-05-24  Gary V. Vaughan  <gary@vaughan.pe>
+
+	Merge pull request #3 from rrthomas/master
+	Sync ax_lua.m4 with autoconf-archive
+
+2014-05-23  Reuben Thomas  <rrt@sc3d.org>
+
+	Sync ax_lua.m4 with autoconf-archive
+
+2014-05-23  Gary V. Vaughan  <gary@gnu.org>
+
+	m4: discard stderr, in case Lua fails for any reason.
+	* m4/ax_lua.m4 (_AX_LUA_CHK_VER): For compatibility with the contract
+	from the previous (shell|sed|awk) implementation, discard stderr output.
+	(AX_PROG_LUA): Missing backtick.
+
+	m4: use discovered Lua interpreter for its own version analysis.
+	* m4/ax_lua.m4 (AX_PROG_LUA): Use discovered Lua interpreter to
+	repor its own version number.
+	(_AX_LUA_CHK_VER): Use Lua code for version comparison rather
+	than depending on AX_COMPARE_VERSION macro, some awk and a slew
+	of sed.
+	* m4/ax_compare_version.m4: Remove.  Surplus to newly reduced
+	requirements.
+	* AUTHORS, README.md: Remove references to ax_compare_version.m4.
+	* NEWS: Update.
+
+2014-05-21  ncopa  <http://github.com/ncopa>
+
+	m4: don't use GNU grep extensions in portable scripts.
+	* m4/ax_lua.m4 (AX_PROG_LUA): \+ is not valid in standard BRE.
+	Use bare + in ERE with `grep -E`.
+
+2014-04-15  Gary V. Vaughan  <gary@gnu.org>
+
+	bootstrap: fix a typo in help.
+	* build-aux/bootstrap.slingshot (slingshot_options_prep): Add the
+	missing 'l' back into buildreq.
+	* bootstrap: Regenerate.
+
+2014-04-05  Gary V. Vaughan  <gary@gnu.org>
+
+	release: adjust for github url changes.
+	* build-aux/release.mk (_PRE): Raw file content is now served
+	from `https://raw.githubusercontent.com/...`.
+	(GITHUB_ROCKSPEC): Replace the `github` part of the prefix with
+	$(_PRE) too.
+
+	release: fix quote nesting.
+	* build-aux/release.mk (public-submodule-commit): Fix quote
+	nesting.
+
+2014-03-23  Gary V. Vaughan  <gary@gnu.org>
+
+	travis: luarocks requires `make build`, not `make all`.
+	* travis.yml.in (install): Use `make build` for LuaRocks.
+	* .travis.yml: Regenerate.
+
+	travis: redo LuaRocks configuration.
+	* travis.yml.in (install): LuaRocks configure --with-lua switch
+	stands in for --with-lua-prefix.  Adjust and simplify.
+	* .travis.yml: Regenerate.
+
+	travis: set $LUAROCKS interpreter explicitly.
+	* travis.yml.in: Prefix every $LUAROCKS with $LUA.
+	* .travis.yml: Regenerate.
+
+	travis: revert previous change, and let luarocks pick its own Lua.
+	* travis.yml.in (LUAROCKS): Remove $LUA prefix.
+	* .travis.yml: Regenerate.
+
+	travis: ensure LUA is defined before LUAROCKS is expanded.
+	* travis.yml.in (env): Switch order of matrix and global sections.
+	* .travis.yml: Regenerate.
+
+	travis: luarocks-2.1.2 seems to need more configure arguments.
+	* travis.yml.in (install): Add --lua-suffix argument to configure.
+	* .travis.yml: Regenerate.
+
+	travis: luarocks-2.1.2 configuration tweaks.
+	* travis.yml.in (install): The configure arguments used for
+	luarocks-2.1.1 don't work with 2.1.2.  Adjust accordingly.
+	* .travis.yml: Regenerate.
+
+2014-03-22  Gary V. Vaughan  <gary@gnu.org>
+
+	docs: improve README.
+	* README.md: Fix some typos, and improve clarity a little.
+
+	travis: regenerate .travis.yml.
+	* .travis.yml: Regenerate.
+
+2014-01-21  Gary V. Vaughan  <gary@gnu.org>
+
+	travis: bump luarocks install to release 2.1.2.
+	* travis.yml.in (LUAROCKS_BASE): Bump to 2.1.2.
+
+2014-01-17  Gary V. Vaughan  <gary@gnu.org>
+
+	specl: propagate $LUA to prevent mixing interpeters.
+	* build-aux/specl.mk (specl-check-local): Add LUA=$(LUA) to
+	Specl execution environment.
+
+2014-01-16  Gary V. Vaughan  <gary@gnu.org>
+
+	mkrockspecs: handle .../init.lua files properly.
+	* src/mkrockspecs.in (loadmap): Don't leave trailing `.init` in
+	the key field of the build.modules table.
+	* NEWS: Update.
+
+	mkrockspecs: add --repository option for rock/repo name mismatch.
+	* src/mkrockspecs.in (setopt): New function factored out of option
+	setting code duplication.
+	Use it to implement `--repository`.
+	* NEWS: Update.
+
+	configury: bump version to 7.
+	* configure.ac (AC_INIT): Bump version to 7.
+	* build-aux/merge-sections: Regenerate.
+
+2014-01-15  Gary V. Vaughan  <gary@gnu.org>
+
+	Revert "mkrockspecs: slingshot doesn't need slingshot submodule git magic!" and others...
+	This reverts commits 039367682f360cec97324e3fdb58bc3443938468,
+	d963b9832cd68fb938bc50ff423b9c6231e00abc and most of
+	0613d6e152f698bc4f570f00aed14103e8ed6683.
+
+	The whole issue was a red-herring, better solved by a tiny one-line
+	fix to bootstrap $GIT detection.
+
+2014-01-15  Gary V. Vaughan  <gary@gnu.org>
+
+	bootstrap: sync with upstream.
+	* build-aux/bootstrap.in: Sync with upstream.
+	* bootstrap: Regenerate.
+
+	mkrockspecs: add missing semi-colon.
+	* src/mkrockspecs.in (build): Add missing semicolon.
+
+	mkrockspecs: slingshot doesn't need slingshot submodule git magic!
+	* src/mkrockspecs.in (build): Only add the git magic if the
+	name of the current package is not "slingshot".
+
+	mkrockspecs: dont turn an existing git repo into a sparse checkout!
+	* src/mkrockspecs.in (build): Only run the git magic if slingshot
+	is missing.
+
+	configury: bump git revision to 1.7.0 for sparse checkout support.
+	* bootstrap.conf (buildreq): Bump minimum git revision to 1.7.0,
+	the first to support the sparse checkout features used in git/scm
+	rockspecs.
+
+	mkrockspecs: git magic to reenable slingshot submodule in PKG-git-1.rockspec.
+	Without this changeset, it was not possible to run bootstrap
+	inside a non-release revision checked out by luarocks install.
+	* mkrockspecs.in (prog): New --branch/-b option.
+	(build): Ugly git magic to fetch the missing slingshot submodule
+	from `luarocks install http://raw.github.com/owner/package.git`.
+	* NEWS: Update.
+
+	travis: let specl take care of itself.
+	* travis.yml.in (SPECL): Remove all references.
+	* .travis.yml: Regenerate.
+
+2014-01-13  Gary V. Vaughan  <gary@gnu.org>
+
+	travis: cosmetic improvements to travis.yml.in.
+	* travis.yml.in: Cosmetic improvements.
+	* .travis.yml: Regenerate.
+
+	configury: make sure make launched rebootstraps don't fall over.
+	* GNUmakefile (%::): Pass --skip-rock-checks to bootstrap.
+
+	travis: use if statements instead of && short circuiting.
+	* travis.yml.in (script): Travis treats a short circuit fail as
+	a script failure, so use full blown if statement.
+	* .travis.yml: Regenerate.
+
+	travis: fix SPECL environment setting.
+	* travis.yml.in (SPECL): Set it properly.
+	* .travis.yml: Regenerate.
+
+	travis: don't export SPECL until required.
+	* travis.yml.in (global): Remove SPECL.
+	(script): Set SPECL just prior to running it.
+	* .travis.yml: Regenerate.
+
+	slingshot: use buildreq to check specl version, not custom configury.
+	* bootstrap.conf (buildreq): Add specl requirement.
+	* m4/slingshot.m4 (SPECL_MIN): Remove.
+	* build-aux/specl.mk (specl-check-local): Simplify.
+
+	travis: use a single luarocks tree.
+	Now that LDoc and LuaDoc work correctly on Lua 5.2, no need to
+	jump through hoops to keep a separate 5.1 rockstree for them.
+	* m4/slingshot.m4 (GENDOC, GENDOC_FALSE): Remove.
+	* travis.yml.in: Some extra comments and spacing for better
+	readability.
+	(global): Remove GENDOC export.
+	(install): Remove @GENDOC_FALSE@ section.
+	(script): Use new --skip-rock-checks when building a Makefile
+	for luarocks-config.lua generation.
+	* .travis.yml: Regenerate.
+
+	bootstrap: add --skip-rock-checks option.
+	* build-aux/bootstrap.slingshot (slingshot_options_prep): Add
+	default value and usage text for --skip-rock-checks option.
+	(slingshot_parse_options): Parse --skip-rock-checks option.
+	(slingshot_check_rockspecs): Early return if --skip-rock-checks
+	was passed.
+	* bootstrap: Regenerate.
+
+2014-01-08  Gary V. Vaughan  <gary@gnu.org>
+
+	bootstrap: allow pre-emptive APPVAR to skip rockspec version checks.
+	Avoid a catch-22 where you can't run bootstrap because
+	prerequisite rocks are missing, but you can't install the rocks
+	until you have the configured Makefiles necessary to generate
+	luarocks-config.lua.
+	* build-aux/bootstrap.slingshot (slingshot_check_rockspecs): If
+	APPVARs (e.g. LDOC, SPECL) are already set in the environment,
+	but the paths they point to don't yet exist, skip the version
+	check, but show a warning that configure and/or make will be
+	needing them to work properly.
+	* bootstrap: Regenerate.
+	* NEWS: Update.
+
+2014-01-07  Gary V. Vaughan  <gary@gnu.org>
+
+	travis: be explicit about which LuaRocks tree is being used.
+	Older LDoc, and all Luadoc release only work with Lua 5.1, so on
+	Travis we have a system luarocks configured with Lua 5.1 to hold
+	those, but a separate LuaRocks tree managed by the latest LuaRocks
+	release for rock dependencies.
+	* travis.yml.in: Specify the system luarocks tree for bootstrap,
+	so that it will find LuaDoc correctly.
+
+	bootstrap: sync with upstream.
+	* build-aux/bootstrap.in: Sync with upstream, for --version fix.
+	* bootstrap: Regenerate.
+
+	bootstrap: support rockspecs in $buildreq, and --luarocks-tree.
+	* build-aux/bootstrap.slingshot (require_rockspecs_req)
+	(slingshot_rockspec_error, slingshot_split_buildreq)
+	(slingshot_check_rockspecs): New functions.  Add support for
+	checking versions of rockspecs listed in $buildreq.
+	(slingshot_check_rockstree_path): New function. Warn if a
+	custom rockstree is passed, but not added to PATH.
+	(slingshot_options_prep, slingshot_parse_options)
+	(slingshot_option_validation): New functions.  Add support for
+	--luarocks-tree=DIR.
+	* bootstrap: Regenerate.
+	* NEWS: Update.
+
+	bootstrap: sync with upstream.
+	* build-aux/bootstrap.in: sync with upstream.
+	* bootstrap: Regenerate.
+
+2014-01-05  Gary V. Vaughan  <gary@gnu.org>
+
+	bootstrap: sync with upstream.
+	* build-aux/bootstrap.in: Sync with upstream bootstrap.
+	* bootstrap: Regenerate.
+
+	mkrockspecs: reset LUA_INIT and LUA_INIT_5_2 before re-exec.
+	* src/merge-sections.in, src/mkrockspecs.in: Add 'Bourne compat'
+	boilerplate, and ensure LUA_INIT and LUA_INIT_5_2 are reset in
+	the environment before re-execing with $LUA.
+	* build-aux/merge-sections: Regenerate.
+
+2014-01-04  Gary V. Vaughan  <gary@gnu.org>
+
+	bootstrap: check in the merge-sections script.
+	We need build-aux/merge-sections available at bootstrap time so
+	that bootstrap can rebuild itself to check for updates.
+	* bootstrap.conf (require_bootstrap_uptodate): Improve failure
+	message.
+	* .gitignore: Remove build-aux/merge-sections.
+	* build-aux/merge-sections: Check in.
+
+	bootstrap: call func_ensure_changelog manually.
+	* bootstrap.conf: Call func_ensure_changelog manually.
+
+	bootstrap: ensure slingshot_copy function is merged in.
+	* src/merg-sections.in: Add support for `--verbose` flag.
+	* build-aux/bootstrap.in: Sync with upstream, now that section
+	header comment typos are fixed.
+	* bootstrap: Regenerate.
+	* NEWS: Update.
+
+	maint: post-release administrivia.
+	* NEWS: Add header line for next release.
+	* .prev-version: Record previous version.
+	* ./local.mk (old_NEWS_hash): Auto-update.
+
+	Release version 6
+	* NEWS: Record release date.
+
+	bootstrap: auto-merge bootstrap.slingshot into bootstrap.
+	* src/merge-sections.in: New file. Merge sections of named files
+	into input from stdin.
+	* src/src.mk (EXTRA_DIST): Add build-aux/merge-sections.
+	* configure.ac (AC_CONFIG_FILES): Generate build-aux/merge-sections
+	from src/merge-sections.in.
+	* bootstrap, bootstrap.slingshot: Move from here...
+	* bulid-aux/bootstrap.in, bulid-aux/bootstrap.slingshot: ...to here.
+	* .gitignore: Adjust.
+	* build-aux/release.mk (release_extra_dist): Remove
+	bootstrap.slingshot.
+	* local.mk (EXTRA_DIST): Add build-aux/bootstrap.slingshot and
+	build-aux/bootstrap.
+	* bootstrap.conf (require_bootstrap_uptodate): Override bootstrap
+	default with a custom version that knows how to merge in slingshot
+	specific functions to upstream bootstrap.
+	* README.md: Remove bootstrap.slingshot instructions.
+	* bootstrap: Regenerate.
+	* NEWS: Update.
+
+2014-01-03  Gary V. Vaughan  <gary@gnu.org>
+
+	configury: ensure ChangeLog even without gnulib_modules setting.
+	* bootstrap.slingshot (slingshot_ensure_changelog): New
+	function.  Hook bootstrap's func_ensure_changelog into
+	func_prep so that it works even when we don't have gnulib_modules
+	containing gitlog-to-changelog in our bootstrap.conf.
+
+	configury: ChangeLog and README are now managed by bootstrap.
+	* bootstrap.conf (slingshot_force_changelog)
+	(slingshot_force_readme): Remove.
+
+	bootstrap: sync with upstream.
+	* bootstrap: Pick up some bugfixes and enhancements from earlier
+	today.
+
+2014-01-02  Gary V. Vaughan  <gary@gnu.org>
+
+	bootstrap: sync with upstream.
+	* bootstrap: Pick up recent fixes from upstream.
+
+2014-01-01  Gary V. Vaughan  <gary@gnu.org>
+
+	maint: update copyright notices.
+	Add rules, and update all copyright notices.
+	* GNUmakefile (update-copyright): New rule to run
+	build-aux/update-copyright with appropriate options.
+	* local.mk (copyright_env): New macro with appropriate
+	update-copyright options.
+
+2013-12-11  Gary V. Vaughan  <gary@gnu.org>
+
+	mkrockspecs: define spec.build before dereferencing it.
+	* src/mkrockspecs.in: If spec.build is not set before accessing
+	default to the empty table.
+
+2013-12-09  Gary V. Vaughan  <gary@gnu.org>
+
+	release: make sure rockspecs are generated before emails.
+	* build-aux/release.mk (mail): Add dependency on rockspecs.
+
+	travis: support make check on partial installs.
+	* travis.yml.in (script): Set the LUA_PATH to point at the build
+	tree before running make check.
+	* .travis.yml: Regenerate.
+	* NEWS: Update.
+
+2013-12-08  Gary V. Vaughan  <gary@gnu.org>
+
+	mkrockspecs: fix a typo.
+	* src/mkrockspecs.in: Add missing 's' to spec.build.modules reset.
+
+	mkrockspecs: allow "builtin" builds even without --module-dir.
+	* src/mkrockspecs.in: Don't switch to autoconf builds for the
+	main rockspec if the default.build.modules is set in
+	rockspec.conf.
+	* NEWS: Update.
+
+	configury: bump release version to 6.
+	* configure.ac (AC_INIT): Bump release version to 6.
+
+	maint: post-release administrivia.
+	* NEWS: Add header line for next release.
+	* .prev-version: Record previous version.
+	* ./local.mk (old_NEWS_hash): Auto-update.
+
+	Release version 5
+	* NEWS: Record release date.
+
+	syntax-check: exclude gnupload from some sanity checks.
+	* build-aux/sanity-cfg.mk (EXTRA_DIST): Add build-aux/sanity-cfg.mk.
+	Exclude gnupload from GPL_version and two_space_separator_in_usage
+	checks.
+
+	build-aux: sync gnupload with gnulib upstream.
+	* build-aux/gnupload: Update from gnulib.
+
+	release: remove disembodied "|| exit 1" from no-submodule-changes.
+	* build-aux/release.mk (no-submodule-changes): Even though the
+	unchanged syntax still matches what's in upstream gnulib... I
+	can't parse it, and neither can my shell.  Removing the errant
+	'|| exit 1' clause fixes the error message for me (/bin/bash:
+	 -c: line 1: syntax error: unexpected end of file).
+	* NEWS: Update.
+
+	maint: Update NEWS.
+	* NEWS: Update.
+
+	travis: update to luarocks-2.1.1.
+	* travis.yml.in (env): Bump LUAROCKS_BASE to luarocks-2.1.1.
+	* .travis.yml: Regenerate.
+
+	maint: regenerate .travis.yml.
+	* .travis.yml: Regenerate.
+
+	travis: install luarocks to work properly with compiled rocks.
+	* travis.yml.in (matrix): Add LUA_SUFFIX setting per Lua.
+	(install): configure luarocks with matching version, suffix and
+	include settings.
+
+	travis: restore library links for system libyaml.
+	Recent Travis CI VMs are missing libraries for libyaml in the
+	standard compiler search path.  Put them back in that case.
+	* travis.yml.in (install): If libyaml.so is not in /usr/lib,
+	search for suitable libraries and link them into place.
+
+2013-09-26  Gary V. Vaughan  <gary@gnu.org>
+
+	mkrockspecs: sort generated rockspec tables asciibetically.
+	* src/mkrockspecs.in (format): Collect and sort keys within
+	tables before returning stringification in order.
+	* NEWS: Update.
+
+2013-09-25  Gary V. Vaughan  <gary@gnu.org>
+
+	release: fix a typo in check-in-release-branch.
+	* build-aux/release.mk (check-in-release-branch): If we need to
+	create a new release branch, branch at the just tagged release,
+	rather than relying on there being no release history prior to
+	using this rule for the first time.
+
+	maint: remove build-aux/git-version-gen.
+	* build-aux/git-version-gen: Remove.  This script conflicts with
+	the way mkrockspecs expects versions to be formatted.
+
+	configury: support client set gitlog-to-changelog arguments.
+	* build-aux/release.mk (ChangeLog): If gitlog_args macro is set,
+	then pass it to gitlog-to-changelog script.
+
+2013-09-24  Gary V. Vaughan  <gary@gnu.org>
+
+	maint: add .version to gitignore.
+	* .gitignore: ignore .version.
+
+	travis: support non-travis using projects.
+	* build-aux/release.mk (_travis_yml): New macro, can be set to
+	empty in local.mk to prevent travis rules being triggered.
+	(release_extra_dist): Use it instead of hard-coding.
+
+	maint: add some gnulib scripts used by GNU Zile.
+	Add a few additional files to enable Zile to use slingshot instead
+	of tracking a fully blown gnulib subproject for the same.
+	* README-release, build-aux/git-version-gen, build-aux/gnupload,
+	build-aux/update-copyright: Copied from gnulib.
+	* Makefile.am (doc_DATA): New declaration to support Zile.
+
+2013-09-16  Gary V. Vaughan  <gary@gnu.org>
+
+	bootstrap: sync with upstream.
+	* bootstrap: Pick up recent fixes from upstream.
+
+2013-09-12  Gary V. Vaughan  <gary@gnu.org>
+
+	announcement: show luarocks install command correctly.
+	* build-aux/release.mk (announcement): Format improvements.
+	* NEWS: Update.
+
+	specl: SPECL_OPTS now works correctly.
+	* GNUmakefile (SPECL_OPTS): Append the verbose option, even when
+	there are additional user-defined SPECL_OPTS.
+	* NEWS: Update.
+
+2013-08-29  Gary V. Vaughan  <gary@gnu.org>
+
+	bootstrap: sync with upstream.
+	* bootstrap: Sync with upstream, to fix a bug that still clones
+	gnulib into the build tree even when gnulib_tool=true is set by
+	bootstrap.conf.
+	* gnulib: Not used.  Remove.
+
+	configury: bump release version to 5.
+	* configure.ac (AC_INIT): Bump release version to 5.
+
+	maint: post-release administrivia.
+	* NEWS: Add header line for next release.
+	* .prev-version: Record previous version.
+	* ./local.mk (old_NEWS_hash): Auto-update.
+
+	Release version 4
+	* NEWS: Record release date.
+
+	maint: patch corrupted old_NEWS_hash.
+	* local.mk (old_NEWS_hash): Regenerate.
+
+	maint: update NEWS.
+	* NEWS: Update with user visible changes since the last release.
+
+	configury: bump release version to 4.
+	* configure.ac (AC_INIT): Bump release version to 4.
+
+	configury: keep gnulib revision under version control.
+	* .gitignore: Add .gitmodules.
+	* gnulib: Add current master revision.
+
+	mkrockspecs: speed up mkrockspecs when luaposix is available.
+	* src/mkrockspecs.in (tree): Prefer a much faster implementation
+	when luaposix is available.
+
+	specs: speed up most slow tests by three orders of magnitude.
+	* specs/mkrockspecs_spec.yaml: The gnulib tree is huge and
+	deep, so using os.execute to traverse all of it with subshells
+	is incredibly slow.  Only the last spec needs it, the rest are
+	much improved by putting the test fils in a subdirectory and
+	traversing only that.
+
+	bootstrap: sync with upstream.
+	* bootstrap: Use the latest upstream version with better portability
+	to OpenBSD, and CLI compatibility with the GNU bootstrap script.
+
+2013-08-25  Gary V. Vaughan  <gary@gnu.org>
+
+	mkrockspecs: don't dereference the lyaml.load return table.
+	* src/mkrockspecs.in: Now that we expect the API to be consistent
+	for the next release of lyaml, no need to dereference the return
+	value of lyaml.load.
+
+	mkrockspecs: lyaml 4 will be API compatible after all.
+	* src/mkrockspecs.in: Remove table hacks for previously expected
+	API incompatible lyaml 4.
+
+	Merge accidentally diverged branch 'pending'
+
+2013-07-28  Gary V. Vaughan  <gary@gnu.org>
+
+	mkrockspecs: compatibility with lyaml > 3.
+	lyaml > 3 returns all documents in a YAML stream as a table, not
+	just the first document.
+	* src/mkrockspecs.in: Detect lyaml 4+ by whether `require "yaml"`
+	works, or else wrap the lyaml.load function return value in a
+	table.
+	* NEWS: Update.
+
+2013-07-15  Gary V. Vaughan  <gary@gnu.org>
+
+	m4: avoid installing luarocks version of current package.
+	* m4/slingshot.m4 (SS_CONFIG_TRAVIS): Skip adding the previous
+	release luarock version of this package to EXTRA_ROCKS.
+
+	configury: strip trailing whitespace from generated .travis.yml.
+	When a slingshot client does NOT use ldoc or luadoc, then
+	GENDOC is empty, and correctly commented out in the generated
+	.travis.yml, but leaves behind a trailing space after configure
+	substitutions that has to be removed manually.
+	* m4/slingshot.m4 (AC_CONFIG_FILES): Strip trailing whitespace.
+	* .travis.yml: Regenerate.
+
+2013-06-27  Gary V. Vaughan  <gary@gnu.org>
+
+	release: remove git submodules before .gitmodules file.
+	* build-aux/release.mk (check-in-release-branch): Don't run `git
+	clean` (which removes .gitmodules) until after submodule-extract-
+	spec has had a chance to remove any submodule directories from the
+	relase branch.
+
+	typo: use 'regexp' consistently in release.mk.
+	* release.mk: Fix missing 'p' in regexp typo.
+
+	sanity: don't complain about git submodule directories.
+	* build-aux/sanity.mk (_sc_excl): Add gnulib and slingshot to
+	exclusion list.
+
+	release: be sure to remove submodules on the release branch.
+	* build-aux/release.mk (check-in-release-branch): Add an expression
+	to delete git submodules before unpacking the release tarball.
+
+	travis: regenerate .travis.yml.
+	* .travis.yml: Regenerate.
+
+	configury: add lua header fallback when cross compiling.
+	* m4/ax_lua.m4 (AX_LUA_HEADERS): Assume header version has been
+	set up correctly when cross-compiling.
+	From Christian Ege.
+
+	travis: handle luadoc and ldoc specially.
+	Both luadoc and ldoc behave badly with lua5.2 on Travis' Ubuntu
+	Precise distros, but work properly if installed separately into
+	the system luarocks tree when called from a wrapper script.
+	* m4/slingshot.m4 (SS_CONFIG_TRAVIS): Generalise special Luadoc
+	support ldoc too, substituting GENDOC and GENDOC_FALSE into...
+	* travis.yml.in: ...here, where LUADOC support is also factored to
+	work with ldoc.
+	* NEWS: Update.
+
+2013-05-24  Gary V. Vaughan  <gary@gnu.org>
+
+	release: copy scm_rockspec to release branch.
+	* Makefile.am (save_release_files): Default setting.
+	* build-aux/rockspecs.mk (save_release_files): Add scm_rockspecs.
+
+2013-05-23  Gary V. Vaughan  <gary@gnu.org>
+
+	README: note use of slingshot_files variable.
+	* README.md (Installation): Note use of slingshot_files variable.
+
+	typo: spell 'locally' correctly in README.md.
+	* README.md (Usage): Spell locally correctly.
+
+2013-05-19  Gary V. Vaughan  <gary@gnu.org>
+
+	bootstrap: fix location of mkrockspecs.in.
+	* bootstrap.slingshot (slingshot_require_slingshot_submodule):
+	mkrockspecs.in moved from build-aux to src.
+
+	maint: post-release administrivia.
+	* NEWS: Add header line for next release.
+	* .prev-version: Record previous version.
+	* ./local.mk (old_NEWS_hash): Auto-update.
+
+	Release version 3
+	* NEWS: Record release date.
+
+	configury: bump release version to 3.
+	* configure.ac (AC_INIT): Bump release version to 3.
+
+	mkrockspecs: put source in src directory.
+	* build-aux/mkrockspecs.in: Move from here...
+	* src/mkrockspecs.in: ...to here.
+	* configure.ac (AC_CONFIG_FILES): Adjust.
+
+	bootstrap: don't overwrite user settings in bootstrap.slingshot.
+	* bootstrap.slingshot (slingshot_files, slingshot_path)
+	(slingshot_url): Don't blindly set to empty, in case this file
+	is sourced *after* user settings.
+
+	bootstrap: diagnose missing slingshot_files settings.
+	* bootstrap.slingshot (slingshot_files): Add dummy setting with
+	doc-comment.
+	(slingshot_copy_files): Check slingshot_files is set.
+
+	configury: support non-autotools LuaRocks installation.
+	* build-aux/mkrockspecs.in: Add a Bourne shell preamble to make
+	a PATH search for suitable Lua binary and re-execute.
+	Support new --module-dir command-line option to specify a tree
+	of `.lua` files for installation, in preference to a full auto-
+	tools build.
+	Collect and correctly quote a LuaRocks `build.modules` table in
+	the generated rockspec when --module-dir is passed.
+	Also, await rockspec configuration on standard input when new
+	positional parameter for FILE is '-'.
+	* specs/package_spec.yaml: Remove dummy spec file.
+	* specs/mkrockspecs_spec.yaml: Verify behaviour of new functions
+	in mkrockspecs.
+	* specs/specs.mk (specl_SPECS): Adjust.
+	* build-aux/mkrockspecs.mk ($(package_rockspec)): Support optional
+	mkrockspecs_args for user arguments to mkrockspecs script.
+	* NEWS: Update.
+
+	README: update and expand.
+	* README.md (Installation): Document the `bootstrap.slingshot`
+	method, as well as "pick and choose" alternative.
+	(ax_with_prog.m4, mail): Remove.  These files are no longer part
+	of Slingshot.
+	* AUTHORS: Update.
+
+	configury: remove Automake foreign requirement.
+	The only thing forcing us to use the hobbled "foreign" mode of
+	Automake is lack of COPYING and README files.  Adding them has
+	the added benefit of distributing a standard README file in
+	releases, but keeping README.md in the repository, which looks
+	nicer on github.
+	* COPYING: New file. Catch all license for files that don't have
+	their own explicit terms.
+	* bootstrap.conf (slingshot_force_readme): Link to README.md.
+	* configure.ac (AM_INIT_AUTOMAKE): Remove foreign.
+	(AX_PROG_LUA): Quote arguments correctly.
+	* .gitignore: Add COPYING and README.
+	* NEWS: Update.
+
+	configury: Makefile.am improvements.
+	* Makefile.am (dist_bin_SCRIPTS, dist_lua_DATA): Declare these
+	here, so that multiple fragments can each add additional files.
+	(EXTRA_DIST): Don't force distribution of README.md.
+	* local.mk (EXTRA_DIST): Add README.md.
+
+2013-05-09  Gary V. Vaughan  <gary@gnu.org>
+
+	.gitignore: ignore configure.lineno scripts.
+	* .gitignore: Add '/config*.lineno'.
+
+2013-05-06  Gary V. Vaughan  <gary@gnu.org>
+
+	configury: propagate $(LUA_INCLUDE) to the compiler.
+	* Makefile.am (AM_CPPFLAGS): Set to $(LUA_INCLUDE).
+
+	refactor: move a single quoted backslash to play nicely with font-lock.
+	* build-aux/release.mk (announcement): change from '...\' to
+	'...'\\, which doesn't throw font lock out completely for the
+	rest of the file!
+
+	sanity: support local configuration.
+	* bulid-aux/sanity.mk: Include build-aux/sanity.cfg if available.
+	(sc_prohibit_strcmp): Don't flag `strncpy()` as an invocation.
+
+	configury: be more sympathetic to library module packagers.
+	* Makefile.am (LUA_CPATH): Set to ';' unless overriddeb by the
+	environment.
+	(EXTRA_LTLIBRARIES, lib_LTLIBRARIES): New declarations.
+
+	mkrockspecs: allow .git suffix in YAML spec.source.url.
+	* build-aux/mkrockspecs.in: Strip any trailing .git suffix
+	from spec.source.url to get the basename for generating git
+	and release rockspecs.
+
+	release: distribute bootstrap.slingshot.
+	* build-aux/release.mk (release_extra_dist): Add bootstrap.slingshot.
+
+	travis: make the local lua5.1 hacked luadoc executable!
+	* travis.yml.in (global.LUADOC): New environment variable.
+	(install): Use it to create and chmod a lua5.1 hacked wrapper.
+	* .travis.yml: Regenerate.
+
+	travis: skip normal install of luadoc after special install.
+	* m4/slingshot.m4: Don't install luadoc twice... the one with
+	the selected Lua interpreter always fails with Lua 5.2!
+
+	travis: regenerate .travis.yml.
+	* .travis.yml: Regenerate.
+
+	travis: make sure luarocks paths are set before installing EXTRA_ROCKS.
+	* travis.yml.in (script): Move @EXTRA_ROCKS@ after path setting.
+	* m4/slingshot.m4 (SS_CONFIG_TRAVIS): Remove SPECL_FALSE.
+	* travis.yml.in (script): Likewise.
+
+	travis: consolidate special treatment for luadoc and specl.
+	* m4/slingshot.m4 (SS_CONFIG_TRAVIS): Set up substitutions keyed
+	on whether 'luadoc' or 'specl' appear in the argument list.
+	* configure.ac (SS_CONFIG_TRAVIS): Add specl.
+	* travis.yml.in: Set up a subsitution to comment or uncomment the
+	appropriate special handling of luadoc and specl.
+	* .travis.yml: Regenerate.
+
+2013-05-05  Gary V. Vaughan  <gary@gnu.org>
+
+	travis: shell picks up locally installed luarocks/bin scripts.
+	* travis.yml.in (script): Prepend luarocks bin directory to PATH.
+
+	travis: detect duplicate EXTRA_ROCKS correctly.
+	* m4/slingshot.m4 (SS_CONFIG_TRAVIS): Don't forget the '*'s!
+
+	bootstrap: don't git submodule update everytime bootsttrap executes.
+	* bootstrap.slingshot (slingshot_require_slingshot_submodule):
+	Move the `git submodule` calls inside the if branch that makes a
+	fresh submodule checkout.
+
+	configury: support multiple EXTRA_ROCKS correctly.
+	* m4/slingshot.m4 (SS_TRAVIS_YML): New autoconf macro.
+	* configure.ac, travis.yml.in: Adjust.
+	* .travis.yml: Regenerate.
+
+	configury: use Automake-time includes, not Make time.
+	* Makefile.am: Using '-include' delays reading of included files
+	until Make time, which means they are not expanded by Automake.
+	Don't do that!
+
+	bootstrap: use the read-only for slingshot subproject clone.
+	* bootstrap.slingshot (slingshot_require_slingshot_dotgitmodules):
+	Aside from requiring authentication, and SSH fingerprint
+	confirmation, the SSH slingshot git url hangs Travis.  Using the
+	public read-only URL fixes it.
+
+	bootstrap: add a bootstrap.conf fragment for slingshot superprojects.
+	* bootstrap.slingshot: New file. Source this from bootstrap.conf to
+	integrate slingshot.
+
+	travis: make additional bootstrap rocks configurable.
+	* configure.ac (EXTRA_ROCKS): Set to lyaml, which is always
+	needed to run slingshot mkrockspecs.
+	* travis.yaml.in: Use @EXTRA_ROCKS@ instead of hard-coding.
+
+	configury: support minimum specl version assertion.
+	* configure.ac (SPECL_MIN): Set and substitute a sensible minimum.
+	* build-aux/specl.mk (specl-check-local): Bail out if specl is too
+	old.
+
+	configury: don't fail on missing make fragments.
+	* Makefile.am: Use `-include` so that this file is useful in a
+	parent project that doesn't have all the listed fragments.
+	* local.mk: Put project specific fragment includes here.
+
+	travis: regenerate .travis.yml.
+	* .travis.yml: Regenerate.
+
+	travis: fix a typo.
+	* travis.yml.in (script): Spell SPECL correctly.
+
+	configury: fix a typo.
+	* configure.ac (AC_PATH_PROG): Spell false correctly.
+
+2013-05-01  Gary V. Vaughan  <gary@gnu.org>
+
+	release: redo announcements without mutt mail wrapper.
+	* build-aux/mail: Remove.
+	* build-aux/relase.mk (announcement): Reword.
+	(announce_emails, rockspec_emails): Overridable announcement
+	destination addresses.
+	(mail): Use system `mail` by sending rockspec url rather than
+	an attachment.
+	NEWS: Update.
+
+	maint: move old_NEWS_hash into local.mk.
+	* Makefile.am (old_NEWS_hash): Move from here...
+	* local.mk: New file. ...to here.
+	* build-aux/release.mk (old_NEWS_hash-file): Adjust.
+	(release_extra_dist): Add local.mk.
+
+	travis: set SPECL_FALSE for .travis.yml generation.
+	* configure.ac: set SPECL_FALSE for .travis.yml generation.
+
+	configury: remove ax_with_prog.m4.
+	* m4/ax_with_prog.m4: Remove.
+	* configure.ac: Use AC_PATH_PROG instead of AX_WITH_PROG.
+
+	specl: automate specl support.
+	* configure.ac: Add SPECL path search and substition.
+	* build-aux/specl.mk: Rules to run specl tests.
+	* specs/specs.mk: Remove everything but the specs list.
+	* travis.yml: On Travis, SPECL is either the one we build into
+	bin/ otherwise we install the specl rock to luarocks/bin.
+	* .travis.yml: Regenerate.
+
+	travis: pass the SPECL location to make check.
+	* travis.yml.in (script): pass the SPECL location to make check.
+
+	travis: install specl before running self-tests.
+	* travis.yml.in: install specl before running self-tests.
+	* .travis.yml: Regenerate.
+
+	travis: let LuaRocks install dependencies and catch any missed.
+	* travis.yml.in (script): Remove inessential rock preinstallations.
+	Don't forget to run self-tests.
+	* .travis.yml: Regenerate.
+
+	configury: remove unused auxdir macro.
+	* Makefile.am (auxdir): Remove.
+
+	maint: distribute README.md.
+	* Makefile.am (EXTRA_DIST): Add README.md.
+
+2013-04-29  Gary V. Vaughan  <gary@gnu.org>
+
+	maint: update NEWS.
+	* NEWS: Update.
+
+	sanity: Lua `error` does not require translatable strings.
+	* build-aux/sanity.mk (_gl_translatable_diag_func_re): Use
+	`error_` instead of `error` to avoid false matches against the
+	Lua `error` keyword.
+
+	configury: distribute README.md too.
+	* Makefile.am (EXTRA_DIST): Add README.md.
+
+	maint: remove reference to removed woger release dependency.
+	* README.md: Don't mention woger -- we don't use it any more!
+
+	maint: definition list reformatting.
+	* README.md: Add some blank lines around list items to get a
+	definition-list-like display.
+
+2013-04-28  Gary V. Vaughan  <gary@gnu.org>
+
+	release: distribute .autom4te.cfg.
+	* build-aux/release.mk (release_extra_dist): Add .autom4te.cfg.
+
+	maint: post-release administrivia.
+	* NEWS: Add header line for next release.
+	* .prev-version: Record previous version.
+	* ./Makefile.am (old_NEWS_hash): Auto-update.
+
+	Release version 2
+	* NEWS: Record release date.
+
+	maint: News updated.
+	* NEWS: updated.
+
+	release: add submodule checks to release rules.
+	* build-aux/release.mk (no-submodule-changes): Make sure we can't
+	accidentally release with unchecked-in submodule changes.
+	(public-submodule-commit): Make sure we can't accidentally release
+	with unpushed local submodule changes.
+	(submodule-checks): List them.
+	(release): Run the checks.
+
+	sanity: port over gnulib sanity checking rules.
+	* build-aux/sanity.mk: Sanity checks from gnulib maint.mk.
+	* README.md: Document it.
+	* GNUmakefile: Include it.
+	(distcheck): Run sanity checks too.
+	(ME): Fix typo found by sanity checks.
+	* build-aux/release.mk: Fix whitespace errors found by sanity
+	checks.
+	* build-aux/rockspecs.mk: Fix typo found by sanity checks.
+
+	release: add maintainer support scripts to distribution by default.
+	* build-aux/release.mk (release_extra_dist): List all the support
+	scripts used by release.mk.
+	(EXTRA_DIST): Append them.
+
+	release: add .PHONY tag to push and mail targets.
+	* build-aux/release.mk (push, mail): Move to end of file. Add
+	.PHONY tag.
+
+	release: ensure git rockspec is available for announcement.
+	* build-aux/release.mk (announcement): Add depedency on scm_rockspec.
+
+	release: create new release branch at v1 tag.
+	* build-aux/release.mk (check-in-release-branch): If there is no
+	release branch yet, create the new at the v1 tag rather than the
+	current HEAD of master (which is probably a post-release admin-
+	istrivia commit).
+
+	maint: post-release administrivia.
+	* configure.ac (AC_INIT): Bump version to 2 for next release.
+	* NEWS: Add header line for next release.
+	* .prev-version: Record previous version.
+	* ./Makefile.am (old_NEWS_hash): Auto-update.
+
+	Release version 1
+	* NEWS: Record release date.
+
+	configury: add autom4te.cache disabling configuration file.
+	* .autom4te.cfg: New file. Disable the cache.
+	* README.md: Document it.
+
+	bootstrap: use the correct bootstrap script.
+	* bootstrap: The full version!
+	* bootstrap.conf: Ensure ChangeLog for Automake.
+
+	release: import mutt mail wrapper.
+	* build-aux/mail: Import mutt mail wrapper.
+	* README.md: Note the addition of mail script.
+
+	release: remove woger dependency.
+	* build-aux/release.mk (WOGER, WOGER_ENV, WOGER_OUT): Remove.
+	(release): Split into...
+	(push): ...this one to push git changes back to origin...
+	(mail): ...and this one to make mailing list announcements.
+	(announcement): Produce a full release announcement message body.
+
+	release: elide 'remote end hung up' error on first release.
+	* build-aux/release.mk (check-in-release-branch): Elide the
+	misleading 'remote end hung up' error when failing to pull the
+	not-yet-created release branch updates into the local tree.
+
+	specs: rudimentary specl demo.
+	* specs/specs.mk (SPECL): Use installed specl binary.
+	(specl-check-local): Remove SPECL dependency, and call directly.
+	* specs/package_spec.yaml: A minimal spce file.
+	* src/src.mk (EXTRA_DIST): Fix a typo.
+	* build-aux/release.mk (EXTRA_DIST): Distribute travis.yml.in.
+	(all-am): Keep .travis.yml up to date by default.
+
+	travis: ensure availability of help2man.
+	* src/src.mk (docs/mkrockspecs.1): No need to call `missing` when
+	configure already sets HELP2MAN appropriately.
+	* travis.yml.in (install): Install help2man.
+	* .travis.yml: Regenerate.
+
+	maint: fix a typo in rockspec.conf
+	* rockspec.conf (homepage): Use the correct project url!
+
+	travis: make sure lyaml is installed.
+	* travis.yml.in: install lyaml to the local rocks tree.
+	* .travis.yml: Regenerate.
+
+	maint: add travis support.
+	* .travis.yml: New file. Generated from travis.yml.in.
+	* .gitignore: Remove .travis.yml.
+	* src/src.mk: Fix typos.
+	* README.md: Add slingshot URL.
+
+	Initial import.
