@@ -1,7 +1,7 @@
 -- This file was automatically generated for the LuaDist project.
 
 package = "slingshot"
-version = "7-1"
+version = "8.0.0-1"
 description = {
   detailed = "A framework for automatic rockspecs creation and simplified release thereof.",
   homepage = "http://github.com/gvvaughan/slingshot",
@@ -10,22 +10,22 @@ description = {
 }
 -- LuaDist source
 source = {
-  tag = "7-1",
+  tag = "8.0.0-1",
   url = "git://github.com/LuaDist-testing/slingshot.git"
 }
 -- Original source
 -- source = {
---   dir = "slingshot-release-v7",
---   url = "http://github.com/gvvaughan/slingshot/archive/release-v7.zip",
+--   dir = "slingshot-release-v8.0.0",
+--   url = "http://github.com/gvvaughan/slingshot/archive/release-v8.0.0.zip",
 -- }
 dependencies = {
-  "lua >= 5.1",
+  "lua >= 5.1, < 5.4",
   "lyaml",
 }
 external_dependencies = nil
 build = {
   build_command = "./configure LUA='$(LUA)' LUA_INCLUDE='-I$(LUA_INCDIR)' --prefix='$(PREFIX)' --libdir='$(LIBDIR)' --datadir='$(LUADIR)' --datarootdir='$(PREFIX)' && make clean all",
   copy_directories = {},
-  install_command = "make install luadir='$(LUADIR)'",
+  install_command = "make install luadir='$(LUADIR)' luaexecdir='$(LIBDIR)'",
   type = "command",
 }
